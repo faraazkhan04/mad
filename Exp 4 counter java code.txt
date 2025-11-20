@@ -1,0 +1,97 @@
+xml
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/cv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="40dp"/>
+
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Counter"
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/btn_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop Counter"
+        android:layout_margin="10dp"/>
+
+</LinearLayout>
+
+
+
+
+
+java
+
+
+
+package com.example.q4;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    Button btnStart, btnStop;
+    TextView counterView;
+    int i = 1;
+    Handler handler = new Handler();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        btnStart  = findViewById(R.id.btn_start);
+        btnStop   = findViewById(R.id.btn_stop);
+        counterView = findViewById(R.id.cv);
+
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                i = 1;
+                handler.postDelayed(updateCounter, 0);
+            }
+        });
+
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handler.removeCallbacks(updateCounter);
+            }
+        });
+    }
+
+    private final Runnable updateCounter = new Runnable() {
+        @Override
+        public void run() {
+            counterView.setText(String.valueOf(i));
+            i++;
+            handler.postDelayed(this, 1000);
+        }
+    };
+}
+
+
